@@ -59,7 +59,24 @@ router.route('/:id')
         });
     })
     .put(function(req, res){
-        
+        var title = req.body.title;
+        var content = req.body.content;
+        mongoose.model('Post').findByIdAndUpdate(req.params.id, {title: title, content: content}, function(err, doc){
+          if(err) {
+            res.status(500).json(err);
+          } else {
+            res.json(doc);
+          }
+        });
+    })
+    .delete(function(req, res){
+      mongoose.model('Post').findByIdAndRemove(req.params.id, function(err, doc){
+        if(err){
+          res.status(500).json(err);
+        } else {
+          res.json({message: "deleted success"});
+        }
+      });
     });
 
 module.exports = router;
